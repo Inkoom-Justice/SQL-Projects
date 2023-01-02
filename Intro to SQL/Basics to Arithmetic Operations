@@ -1,0 +1,118 @@
+### This file contains the basics of SQL
+### I am using the Parch and Posey Database
+
+Note: SQL STATEMENT 
+      1. A piece of correctly written SQL code
+      2. A way to manipulate data stored in a database
+      3. A sentence
+      4. A way to read data stored in a database.
+      
+      NB: SQL commands are called QUERIES/QUERY
+
+#SELECT AND FROM
+###SELECT indicates which column(s) you want to be given the data for.
+###FROM specifies from which table(s) you want to select the columns. Notice the columns need to exist in this table.
+
+#### HOW TO SELECT DATA WITH ALL COLUMNS FROM A DATABASE
+SELECT * 
+FROM orders
+
+### HOW TO SELECT DATA (orders) WITH SOME COLUMNS (id, account_id, occurred_at) FROM A DATABASE
+SELECT id, account_id, occurred_at
+FROM orders
+
+
+# LIMIT
+###LIMIT statement is useful when you want to see just the first few rows of a table.
+###This can be much faster for loading than if we load the entire dataset.
+SELECT *
+FROM orders
+LIMIT 10;
+
+SELECT *
+FROM web_events
+LIMIT 100000;
+
+SELECT occurred_at, account_id, channel
+FROM web_events
+LIMIT 15;
+
+# ORDER BY
+###The ORDER BY statement allows us to sort our results using the data in any column.
+SELECT id, occurred_at, total_amt_usd
+FROM orders
+ORDER BY occurred_at
+LIMIT 10;
+
+SELECT id, account_id, total_amt_usd
+FROM orders
+ORDER BY total_amt_usd DESC 
+LIMIT 5;
+
+SELECT id, account_id, total_amt_usd
+FROM orders
+ORDER BY total_amt_usd
+LIMIT 20;
+
+SELECT id, account_id, total_amt_usd
+FROM orders
+ORDER BY account_id, total_amt_usd DESC;
+
+SELECT id, account_id, total_amt_usd
+FROM orders
+ORDER BY total_amt_usd DESC, account_id;
+
+# WHERE
+###Using the WHERE statement, we can display subsets of tables based on conditions that must be met.
+SELECT *
+FROM orders
+WHERE account_id = 4251
+ORDER BY occurred_at
+LIMIT 1000;
+
+SELECT *
+FROM orders
+WHERE gloss_amt_usd >= 1000
+LIMIT 5;
+
+SELECT *
+FROM orders
+WHERE total_amt_usd < 500
+LIMIT 10;
+
+SELECT *
+FROM accounts
+WHERE name = 'United Technologies'
+
+SELECT *
+FROM accounts
+WHERE name != 'United Technologies'
+
+SELECT name, website, primary_poc
+FROM accounts
+WHERE name = 'Exxon Mobil';
+
+# AS
+### The AS command can be used to name new columns in SQL. It is mostly used to name a new column after an arithmetic operation.
+
+### ARITHMETIC OPERATORS
+    1. ADDITION
+    2. SUBTRACTION
+    3. MULTIPLICATION
+    4. DIVISION
+
+SELECT account_id,
+       occurred_at,
+       standard_qty,
+       gloss_qty + poster_qty AS nonstandard_qty
+FROM orders
+
+SELECT id, account_id, standard_amt_usd/standard_qty AS unit_price
+FROM orders
+LIMIT 10;
+
+SELECT id, account_id, 
+poster_amt_usd/(standard_amt_usd + gloss_amt_usd + poster_amt_usd) AS post_per
+FROM orders
+LIMIT 10;
+
